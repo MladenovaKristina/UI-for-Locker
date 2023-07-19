@@ -86,7 +86,7 @@ export default class SelectController extends DisplayObject {
             if (object !== this.selectedObject) {
                 // If the clicked object is different from the selected object, select it.
                 this.selectedObject = object;
-                this._dock.showHighlight(x, y);
+                this._dock.showHighlight(this.selectedObject);
                 this.messageDispatcher.post(this.onSelectEvent, { selectedObject: object });
             } else {
                 // If the clicked object is the same as the selected object, deselect it.
@@ -101,7 +101,7 @@ export default class SelectController extends DisplayObject {
                 this.deselect(object);
             } else {
                 this.selectedObject = object;
-                this._dock.showHighlight(x, y);
+                this._dock.showHighlight(this.selectedObject);
                 this.messageDispatcher.post(this.onSelectEvent, { selectedObject: object });
             }
         }

@@ -49,9 +49,9 @@ export default class UIDock extends DisplayObject {
         this.add(this._objects)
     }
 
-    showHighlight(x, y) {
-        this.highlight.x = x;
-        this.highlight.y = y;
+    showHighlight(object) {
+        this.highlight.x = object.x + object.width / 2;
+        this.highlight.y = object.y + object.height / 2;
         this.highlight.visible = true;
     }
 
