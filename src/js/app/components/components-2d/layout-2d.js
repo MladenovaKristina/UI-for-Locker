@@ -37,18 +37,21 @@ export default class Layout2D extends DisplayObject {
     this._refPhoto = new ReferencePhoto();
     this.add(this._refPhoto);
 
-    this._tutorial = new Tutorial();
-    this.add(this._tutorial);
+
 
     this._createEndscreen();
 
     this._createLogo();
     this._createDownloadBtn();
 
-    this.onResize();
     this._initSceneController();
     this._initSelectController();
 
+
+    this._tutorial = new Tutorial(this._sceneController._sceneElements);
+    this.add(this._tutorial);
+
+    this.onResize();
     Black.stage.on('resize', this.onResize, this);
   }
 
@@ -64,9 +67,6 @@ export default class Layout2D extends DisplayObject {
     this._refPhoto.y = bb.top + Number(ConfigurableParams.getData()["reference_photo"]["offset"]["y"]);
     if (this._topText.visible)
       this._refPhoto.y = this._topText.y + this._topText.height + Number(ConfigurableParams.getData()["reference_photo"]["offset"]["y"]);
-
-    this._tutorial.x = Black.stage.centerX;
-    this._tutorial.y = Black.stage.centerY + bb.height * 0.18;
 
     this._endScreen.onResize(bb);
 

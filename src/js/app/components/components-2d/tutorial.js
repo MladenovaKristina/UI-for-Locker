@@ -4,7 +4,7 @@ import UTween from '../../helpers/../../utils/utween';
 import { TutorialHand } from './tutorial-hand';
 
 export default class Hint extends DisplayObject {
-    constructor(sceneElements) {
+    constructor(uiElements) {
         super();
 
         this._sign = null;
@@ -14,7 +14,7 @@ export default class Hint extends DisplayObject {
 
         this.visible = true;
 
-        this._sceneElements = sceneElements;
+        this._uiElements = uiElements;
 
         this._bb = Black.stage.bounds;
     }
@@ -22,7 +22,7 @@ export default class Hint extends DisplayObject {
     onAdded() {
         // this._sign.blendMode = 'mask';
         this._hand = new TutorialHand();
-        // this._hand.x = this._sceneElements[0].x;
+        this._hand.x = this._uiElements[0].x;
         this._hand.y = this._bb.bottom - 300;
 
         this.add(this._hand);
@@ -49,24 +49,24 @@ export default class Hint extends DisplayObject {
         const count = getCounter();
 
         this._hintTimer.on('tick', msg => {
-            // this._makeStep(count);
+            this._makeStep(count);
         });
 
         this._hand.visible = true;
-        // this._makeStep(count);
+        this._makeStep(count);
     }
-    // 
-    //     _makeStep(count) {
-    //         const activeItems = this._sceneElements.filter(item => item.visible && !item.active);
-    // 
-    //         const index = count() % activeItems.length;
-    //         if (activeItems.length <= 0) this._hand.visible = false;
-    //         else this._hand.visible = true;
-    // 
-    //         this._hand.x = activeItems[index].x + activeItems[index].width / 2;
-    // 
-    //         this.tap();
-    //     }
+
+    _makeStep(count) {
+        const activeItems = this._uiElements.filter(item => item.visible && !item.active);
+
+        const index = count() % activeItems.length;
+        if (activeItems.length <= 0) this._hand.visible = false;
+        else this._hand.visible = true;
+
+        this._hand.x = activeItems[index].x + activeItems[index].width / 2;
+
+        this.tap();
+    }
 
     tap() {
         this._hand.y = this._bb.bottom - this._hand.height * 1.2;
