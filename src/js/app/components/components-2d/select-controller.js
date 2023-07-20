@@ -7,20 +7,16 @@ export default class SelectController extends DisplayObject {
         this._objects = objects;
         this._dock = dock;
         this._selectAmount = null;
-
         this.messageDispatcher = new MessageDispatcher();
-
         this.onSelectEvent = 'onSelectEvent';
         this.onDeselectEvent = 'onDeselectEvent';
-
         this.selectedObject = null;
-
         this._initCheckmark();
+        this.objectsLength = this._objects.length;
     }
 
     _initCheckmark() {
         const bb = Black.stage.bounds;
-
         this._checkmark = new Sprite('check');
         const aspectRatio = this._checkmark.width / this._checkmark.height;
         this._checkmark.height = 100;
@@ -28,7 +24,6 @@ export default class SelectController extends DisplayObject {
         this._checkmark.x = bb.right - this._checkmark.width;
         this._checkmark.y = bb.height / 2;
         this.add(this._checkmark);
-
         this._checkBounds = this._checkmark.getBounds();
     }
 
@@ -37,7 +32,7 @@ export default class SelectController extends DisplayObject {
     }
 
     selectAll() {
-        this._selectAmount = this._objects.length;
+        this._selectAmount = this.objectsLength;
     }
 
     onDown(x, y) {
@@ -45,7 +40,7 @@ export default class SelectController extends DisplayObject {
     }
 
     getObjectAtPosition(x, y) {
-        const clickedObject = this._objects.find(object => {
+        const clickedObject = this._objects.find((object) => {
             const objectBounds = object.getBounds();
             return (
                 x >= objectBounds.x &&
@@ -55,10 +50,7 @@ export default class SelectController extends DisplayObject {
             );
         });
 
-        if (
-            this._selectAmount === 1 &&
-            clickedObject === this.selectedObject
-        ) {
+        if (this._selectAmount === 1 && clickedObject === this.selectedObject) {
             this.deselect(clickedObject);
         } else if (clickedObject) {
             this.select(x, y, clickedObject);
@@ -80,43 +72,34 @@ export default class SelectController extends DisplayObject {
 
     select(x, y, object) {
         if (this._selectAmount === 1) {
-            // For selectAmount = 1, deselect the previously selected object, if any.
             this.deselect(this.selectedObject);
-
             if (object !== this.selectedObject) {
-                // If the clicked object is different from the selected object, select it.
                 this.selectedObject = object;
                 this._dock.showHighlight(this.selectedObject);
                 const selectedIndex = this._objects.indexOf(object);
-
                 this.messageDispatcher.post(this.onSelectEvent, selectedIndex);
             } else {
-                // If the clicked object is the same as the selected object, deselect it.
-                this.selectedObject = null;
-                this._dock.hideHighlight();
-                const selectedIndex = this._objects.indexOf(object);
+                this._dock.hideHighlight(this.selectedObject);
 
+                this.selectedObject = null;
+                const selectedIndex = this._objects.indexOf(object);
                 this.messageDispatcher.post(this.onDeselectEvent, selectedIndex);
             }
         } else {
-            // For selectAmount > 1, we don't deselect when a new item is pressed.
-            // We only deselect when a clicked item is clicked again.
             if (object === this.selectedObject) {
                 this.deselect(object);
             } else {
                 this.selectedObject = object;
                 this._dock.showHighlight(this.selectedObject);
                 const deselectedIndex = this._objects.indexOf(object);
-
                 this.messageDispatcher.post(this.onSelectEvent, deselectedIndex);
             }
         }
     }
 
-
     deselect(object) {
         if (object) {
-            this._dock.hideHighlight();
+            this._dock.hideHighlight(object);
             this.messageDispatcher.post(this.onDeselectEvent, { deselectedObject: object });
             this.selectedObject = null;
         }

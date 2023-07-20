@@ -19,7 +19,7 @@ export default class UIObjects extends DisplayObject {
         else this._objectNumber = 3;
         const bb = Black.stage.bounds;
 
-        const height = this._dock.height * 0.17;
+        const height = 200;
         const positionY = bb.bottom - height;
         const centerY = bb.bottom - height / 2 - 100;
         const centerX = bb.width / 2;
