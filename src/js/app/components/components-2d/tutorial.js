@@ -1,5 +1,5 @@
 import ConfigurableParams from '../../../data/configurable_params';
-import { Tween, Black, Graphics, Sprite, DisplayObject, TextField, Ease, Timer } from '../../../utils/black-engine.module';
+import { Tween, Black, Graphics, Sprite, DisplayObject, TextField, Ease, Timer, ColorScatter } from '../../../utils/black-engine.module';
 import UTween from '../../helpers/../../utils/utween';
 import { TutorialHand } from './tutorial-hand';
 
@@ -14,7 +14,9 @@ export default class Hint extends DisplayObject {
 
         this.visible = true;
 
-        this._uiElements = uiElements;
+        this._uiElements = uiElements._sceneElements;
+
+        this._spacing = uiElements._spacing;
 
         this._bb = Black.stage.bounds;
     }
@@ -22,8 +24,9 @@ export default class Hint extends DisplayObject {
     onAdded() {
         // this._sign.blendMode = 'mask';
         this._hand = new TutorialHand();
-        this._hand.x = this._uiElements[0].x;
-        this._hand.y = this._bb.bottom - 300;
+        this._hand.x = this._spacing[0];
+
+        this._hand.y = this._bb.bottom - this._uiElements[0].height / 10 * 2;
 
         this.add(this._hand);
 
@@ -57,13 +60,12 @@ export default class Hint extends DisplayObject {
     }
 
     _makeStep(count) {
-        const activeItems = this._uiElements.filter(item => item.visible && !item.active);
+        const activeItems = this._uiElements;
 
         const index = count() % activeItems.length;
         if (activeItems.length <= 0) this._hand.visible = false;
         else this._hand.visible = true;
-
-        this._hand.x = activeItems[index].x + activeItems[index].width / 2;
+        this._hand.x = this._spacing[index] - activeItems[index].width * 0.6;
 
         this.tap();
     }

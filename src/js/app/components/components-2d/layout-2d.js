@@ -47,8 +47,7 @@ export default class Layout2D extends DisplayObject {
     this._initSceneController();
     this._initSelectController();
 
-
-    this._tutorial = new Tutorial(this._sceneController._sceneElements);
+    this._tutorial = new Tutorial(this._sceneController);
     this.add(this._tutorial);
 
     this.onResize();
@@ -105,6 +104,10 @@ export default class Layout2D extends DisplayObject {
       this.messageDispatcher.post(this.onDeselectEvent, elementSelected);
 
     });
+  }
+
+  _initTutorial() {
+
   }
 
   _createEndscreen() {

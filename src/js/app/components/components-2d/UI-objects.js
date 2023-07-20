@@ -13,11 +13,13 @@ export default class UIObjects extends DisplayObject {
     }
 
     _initView() {
+        this._spacing = [];
+
         if (this._sceneNumber === 3) this._objectNumber = 4;
         else this._objectNumber = 3;
         const bb = Black.stage.bounds;
 
-        const height = this._dock.height * 0.2;
+        const height = this._dock.height * 0.17;
         const positionY = bb.bottom - height;
         const centerY = bb.bottom - height / 2 - 100;
         const centerX = bb.width / 2;
@@ -35,7 +37,7 @@ export default class UIObjects extends DisplayObject {
             for (let i = 0; i < colors.length; i++) {
                 const color = new Graphics();
                 color.fillStyle(colors[i], 1);
-                color.circle(startX + i * 200, centerY, circleSize);
+                color.circle(0 + circleSize / 0.7, centerY, circleSize);
                 color.fill();
 
                 const colorContainer = new GameObject();
@@ -52,25 +54,29 @@ export default class UIObjects extends DisplayObject {
                 const element = new Sprite(spriteName);
 
                 const aspectRatio = element.width / element.height;
-                const desiredHeight = 200;
+                const desiredHeight = height;
                 element.height = desiredHeight;
                 element.width = desiredHeight * aspectRatio;
-                element.y = positionY - element.height / 3;
+                element.y = positionY - height / 2;
 
                 this._dock.addChild(element);
             }
 
-            if (this._dock.mChildren && this._dock.mChildren.length > 0) {
-                const childrenCount = this._dock.mChildren.length;
-                const spacing = (this._dock.width - this._dock.mChildren.reduce((totalWidth, element) => totalWidth + element.width, 0)) / (childrenCount + 1);
-                let currentX = spacing;
 
-                for (let i = 0; i < childrenCount; i++) {
-                    const element = this._dock.mChildren[i];
-                    element.x = currentX;
-                    currentX += element.width + spacing;
-                }
+        } if (this._dock.mChildren.length > 0) {
+            const childrenCount = this._dock.mChildren.length;
+            const spacing = (this._dock.width - this._dock.mChildren.reduce((totalWidth, element) => totalWidth + element.width, 0)) / (childrenCount + 1);
+            let currentX = spacing;
+
+            for (let i = 0; i < childrenCount; i++) {
+                this.visible = true;
+                this.active = false;
+                const element = this._dock.mChildren[i];
+                element.x = currentX;
+                currentX += element.width + spacing;
+                this._spacing.push(currentX);
             }
+
         }
     }
 }
