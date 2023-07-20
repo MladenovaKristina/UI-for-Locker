@@ -20,6 +20,7 @@ export default class UIDock extends DisplayObject {
         const height = 200;
         const centerY = bb.bottom - height / 2 - 100;
 
+
         this.highlight = new Graphics();
         this.highlight.fillStyle(0xffffff, 1);
         this.highlight.circle(0, 0, 100);
@@ -48,8 +49,6 @@ export default class UIDock extends DisplayObject {
     }
 
     showHighlight(object) {
-        this.highlight.visible = true;
-
 
         if (this._sceneNumber == 0) {
             this.highlight.x = object.x + object.width * 0.58;
@@ -58,7 +57,8 @@ export default class UIDock extends DisplayObject {
         else {
             this.highlight.x = object.x + object.width / 2;
             this.highlight.y = object.y + object.height / 2;
-        }
+        } this.highlight.visible = true;
+
     }
 
     hideHighlight(object) {

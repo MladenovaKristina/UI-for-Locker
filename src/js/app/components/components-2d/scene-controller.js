@@ -6,7 +6,7 @@ import UIDock from './UI-dock';
 export default class SceneController extends DisplayObject {
     constructor() {
         super();
-        this._sceneNumber = 0;
+        this._sceneNumber = 2;
         this._selectController = null;
         this._uiDock = null;
     }

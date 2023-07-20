@@ -28,11 +28,7 @@ export default class UIObjects extends DisplayObject {
             const colors = [0xFFFF00, 0xFF0000, 0x800080, 0x0000FF];
             const circleSize = 70;
 
-            // Calculate the total width of all circles
-            const totalWidth = (colors.length - 1) * 40 + colors.length * 200;
 
-            // Calculate the starting x position for the first circle
-            const startX = centerX - totalWidth / 2 - circleSize * 2;
 
             for (let i = 0; i < colors.length; i++) {
                 const color = new Graphics();
