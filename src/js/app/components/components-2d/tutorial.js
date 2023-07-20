@@ -14,7 +14,7 @@ export default class Hint extends DisplayObject {
 
         this.visible = true;
 
-        this._uiElements = uiElements._sceneElements;
+        this._uiElements = uiElements._uiElements;
 
         this._spacing = uiElements._spacing;
 

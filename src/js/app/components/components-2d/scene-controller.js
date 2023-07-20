@@ -23,7 +23,7 @@ export default class SceneController extends DisplayObject {
     _initUIDock() {
         this._uiDock = new UIDock(this._sceneNumber);
         this.add(this._uiDock)
-        this._sceneElements = this._uiDock._banner.mChildren;
+        this._uiElements = this._uiDock._banner.mChildren;
         this._spacing = this._uiDock._objects._spacing;
     }
 

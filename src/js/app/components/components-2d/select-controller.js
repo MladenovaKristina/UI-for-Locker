@@ -87,12 +87,16 @@ export default class SelectController extends DisplayObject {
                 // If the clicked object is different from the selected object, select it.
                 this.selectedObject = object;
                 this._dock.showHighlight(this.selectedObject);
-                this.messageDispatcher.post(this.onSelectEvent, { selectedObject: object });
+                const selectedIndex = this._objects.indexOf(object);
+
+                this.messageDispatcher.post(this.onSelectEvent, selectedIndex);
             } else {
                 // If the clicked object is the same as the selected object, deselect it.
                 this.selectedObject = null;
                 this._dock.hideHighlight();
-                this.messageDispatcher.post(this.onDeselectEvent, { deselectedObject: object });
+                const selectedIndex = this._objects.indexOf(object);
+
+                this.messageDispatcher.post(this.onDeselectEvent, selectedIndex);
             }
         } else {
             // For selectAmount > 1, we don't deselect when a new item is pressed.
@@ -102,7 +106,9 @@ export default class SelectController extends DisplayObject {
             } else {
                 this.selectedObject = object;
                 this._dock.showHighlight(this.selectedObject);
-                this.messageDispatcher.post(this.onSelectEvent, { selectedObject: object });
+                const deselectedIndex = this._objects.indexOf(object);
+
+                this.messageDispatcher.post(this.onSelectEvent, deselectedIndex);
             }
         }
     }
