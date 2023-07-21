@@ -33,7 +33,7 @@ export default class UIObjects extends DisplayObject {
             for (let i = 0; i < colors.length; i++) {
                 const color = new Graphics();
                 color.fillStyle(colors[i], 1);
-                color.circle(0 + circleSize / 0.7, centerY, circleSize);
+                color.circle(0 + circleSize / 0.7, height / 2, circleSize);
                 color.fill();
 
                 const colorContainer = new GameObject();
