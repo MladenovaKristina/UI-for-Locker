@@ -23,6 +23,7 @@ export default class Hint extends DisplayObject {
     }
 
     onResize(scene) {
+        this.stopHint();
 
         this._uiElements = scene._uiElements;
         for (let i = 0; i < scene._uiElements.length; i++) {
@@ -31,9 +32,7 @@ export default class Hint extends DisplayObject {
         }
         this._bb = Black.stage.bounds;
 
-        this.stopHint();
         this.startHint();
-
     }
 
     onAdded() {
@@ -76,7 +75,11 @@ export default class Hint extends DisplayObject {
         if (activeItems.length <= 0) this._hand.visible = false;
         else this._hand.visible = true;
 
-        this._hand.x = this._spacing[index] + activeItems[index].width - this._hand.width / 2;
+        if (this._bb.width > this._bb.height) {
+            this._hand.x = this._spacing[index] + activeItems[index].width - this._hand.width / 2;
+        } else {
+            this._hand.x = this._spacing[index] + activeItems[index].width;
+        }
         this.tap();
     }
 
