@@ -13,6 +13,7 @@ export default class Hint extends DisplayObject {
 
         this._uiElements = [];
         this._overflow = null;
+        this._sceneNumber = null;
         this._spacing = [];
 
         this._hand = null;
@@ -28,6 +29,7 @@ export default class Hint extends DisplayObject {
 
         this._uiElements = scene._uiElements;
         this._overflow = scene._overflow;
+        this._sceneNumber = scene._sceneNumber;
 
         this._bb = Black.stage.bounds;
         this.startHint(scene._spacing);
@@ -71,13 +73,21 @@ export default class Hint extends DisplayObject {
 
         if (activeItems.length <= 0) this._hand.visible = false;
         else this._hand.visible = true;
-
         if (Black.stage.bounds.width > Black.stage.bounds.height) {
-            this._hand.x = spacing[index] - activeItems[index].width / 2 - this._hand.width * 0.2;
+            if (this._sceneNumber == 4) {
+                this._hand.x = spacing[index] - activeItems[index].width + this._hand.width;
+            } else if (this._sceneNumber == 5) {
+                this._hand.x = spacing[index] - activeItems[index].width - this._hand.width;
+            } else
+                this._hand.x = spacing[index] - activeItems[index].width / 2 - this._hand.width * 0.2;
         }
         else {
+            if (this._sceneNumber === 4) {
+                this._hand.x = spacing[index] - activeItems[index].width * 2;
+            }
+            else
 
-            this._hand.x = spacing[index] - activeItems[index].width / 2 - this._hand.width * 0.2;
+                this._hand.x = spacing[index] - activeItems[index].width / 2 - this._hand.width * 0.2;
         }
 
 
