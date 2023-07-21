@@ -6,7 +6,8 @@ import UIDock from './UI-dock';
 export default class SceneController extends DisplayObject {
     constructor() {
         super();
-        this._sceneNumber = 0;
+        this._sceneNumber = 2;
+        //add scene parameter to sceneController constructor from game or something
         this._selectController = null;
         this._uiDock = null;
     }
@@ -25,6 +26,7 @@ export default class SceneController extends DisplayObject {
         this.add(this._uiDock)
         this._uiElements = this._uiDock._banner.mChildren;
         this._spacing = this._uiDock._objects._spacing;
+        this._overflow = this._uiDock._objects._overflow;
     }
 
 

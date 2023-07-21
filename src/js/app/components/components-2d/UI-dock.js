@@ -86,6 +86,7 @@ export default class UIDock extends DisplayObject {
         this._banner.rect(bb.left, centerY - height / 2, bb.width, height);
         this._banner.fill();
 
+
         this._objects.onResize();
     }
 }

@@ -9,6 +9,7 @@ export default class UIObjects extends DisplayObject {
         this._sceneNumber = sceneNumber;
         this._objectNumber = null;
         this._selectObjectNumber = 1;
+        this._overflow = false;
         this._initView();
     }
 
@@ -42,7 +43,7 @@ export default class UIObjects extends DisplayObject {
                 this._dock.addChild(colorContainer);
             }
         } else {
-            const spriteCategories = ['wallpaper', 'light', 'decoration', 'spray', 'stickers'];
+            const spriteCategories = ['wallpaper', 'light', 'decoration', 'spray', 'sticker'];
             const category = spriteCategories[this._sceneNumber - 1];
 
             for (let i = 0; i <= this._objectNumber; i++) {
@@ -63,7 +64,9 @@ export default class UIObjects extends DisplayObject {
 
     }
     reposition() {
-        const height = 200;
+        let height = 200;
+        let availableSpace = window.innerWidth;
+        console.log(availableSpace)
 
         if (this._dock.mChildren.length > 0) {
             const isLandscape = Black.stage.bounds.width > Black.stage.bounds.height;
@@ -71,16 +74,18 @@ export default class UIObjects extends DisplayObject {
             const totalChildrenWidth = this._dock.mChildren.reduce((totalWidth, element) => totalWidth + element.width, 0);
 
             let currentX, positionY, spacing;
+            if (totalChildrenWidth > availableSpace) { this._overflow = true }
+
+            const childrenHalved = (Math.ceil(this._dock.mChildren.length / 2));
             if (isLandscape) {
                 const bb = Black.stage.bounds;
                 positionY = bb.bottom - height - height / 2;
-                spacing = (bb.width - totalChildrenWidth) / (childrenCount + 1);
-                currentX = 0 - totalChildrenWidth / 2 + spacing;
-
+                spacing = 30;
+                currentX = 0 + spacing;
             } else {
                 const bb = Black.stage.bounds;
                 positionY = bb.bottom - height - height / 2;
-                spacing = (bb.width - totalChildrenWidth) / (childrenCount + 1);
+                spacing = (availableSpace - totalChildrenWidth) / (childrenCount + 1) + availableSpace / childrenHalved;
                 currentX = spacing;
             }
 
@@ -96,7 +101,17 @@ export default class UIObjects extends DisplayObject {
         }
     }
     onResize() {
+        this._spacing = [];
         this.reposition();
+    }
+    size(objects) {
+        for (let i = 0; i < objects.length; i++) {
+            objects[i].width *= 0.8;
+            objects[i].height *= 0.8;
+            this._overflow = true;
+            console.log(objects[i].x)
+
+        }
     }
 
 }

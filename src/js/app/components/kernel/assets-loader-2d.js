@@ -34,6 +34,13 @@ import wallpaper_2 from '../../../data/textures/UI/wallpapaer_005 (2).png';
 import wallpaper_3 from '../../../data/textures/UI/wallpapaer_006 (2).png';
 import wallpaper_4 from '../../../data/textures/UI/wallpapaer_010 (2).png';
 
+import sticker_0 from '../../../data/textures/UI/stickers/Image_3_Tex.png';
+import sticker_1 from '../../../data/textures/UI/stickers/Image_5_Tex.png';
+import sticker_2 from '../../../data/textures/UI/stickers/Image_7_Tex.png';
+import sticker_3 from '../../../data/textures/UI/stickers/Image_9_Tex.png';
+import sticker_4 from '../../../data/textures/UI/stickers/Image_53_Tex.png';
+
+
 import ConfigurableParams from '../../../data/configurable_params';
 
 export default class AssetsLoader2D extends GameObject {
@@ -85,6 +92,12 @@ export default class AssetsLoader2D extends GameObject {
     assets.enqueueImage('wallpaper_2', wallpaper_2);
     assets.enqueueImage('wallpaper_3', wallpaper_3);
     assets.enqueueImage('wallpaper_4', wallpaper_4);
+
+    assets.enqueueImage('sticker_0', sticker_0);
+    assets.enqueueImage('sticker_1', sticker_1);
+    assets.enqueueImage('sticker_2', sticker_2);
+    assets.enqueueImage('sticker_3', sticker_3);
+    assets.enqueueImage('sticker_4', sticker_4);
 
     assets.enqueueImage('logo', ConfigurableParams.getData()["logo_for_google"]["change_logo"]["value"]);
     assets.enqueueImage('endscreen_logo', ConfigurableParams.getData()["endcard"]["logo"]["value"]);

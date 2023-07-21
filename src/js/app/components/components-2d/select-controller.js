@@ -10,7 +10,7 @@ export default class SelectController extends DisplayObject {
         this.messageDispatcher = new MessageDispatcher();
         this.onSelectEvent = 'onSelectEvent';
         this.onDeselectEvent = 'onDeselectEvent';
-        this.selectedObject = null;
+        this.selectedObjects = [];
         this._initCheckmark();
         this.objectsLength = this._objects.length;
     }
@@ -42,6 +42,7 @@ export default class SelectController extends DisplayObject {
 
     onDown(x, y) {
         this.getObjectAtPosition(x, y);
+
     }
 
     getObjectAtPosition(x, y) {
@@ -55,7 +56,7 @@ export default class SelectController extends DisplayObject {
             );
         });
 
-        if (this._selectAmount === 1 && clickedObject === this.selectedObject) {
+        if (this._selectAmount != null && clickedObject === this.selectedObject) {
             this.deselect(clickedObject);
         } else if (clickedObject) {
             this.select(x, y, clickedObject);
@@ -72,9 +73,14 @@ export default class SelectController extends DisplayObject {
     }
 
     activate() {
-        console.log("activate");
+        this._dock.hideHighlight(this.selectedObject);
+        console.log("activate")
+        for (let i = 0; i < this.selectedObjects.length; i++) {
+            console.log(this.selectedObjects[i].mTextureName)
+        }
+        //uncomment this if you want the activate function to remove the items from the UI that have been activated on the scene
+        this.hideSelectedObjects();
     }
-
     select(x, y, object) {
         if (this._selectAmount === 1) {
             this.deselect(this.selectedObject);
@@ -83,12 +89,18 @@ export default class SelectController extends DisplayObject {
                 this._dock.showHighlight(this.selectedObject);
                 const selectedIndex = this._objects.indexOf(object);
                 this.messageDispatcher.post(this.onSelectEvent, selectedIndex);
+                // Add the object to the selectedObjects array
+                this.selectedObjects.push(object);
             } else {
                 this._dock.hideHighlight(this.selectedObject);
-
                 this.selectedObject = null;
                 const selectedIndex = this._objects.indexOf(object);
                 this.messageDispatcher.post(this.onDeselectEvent, selectedIndex);
+                // Remove the object from the selectedObjects array
+                const index = this.selectedObjects.indexOf(object);
+                if (index !== -1) {
+                    this.selectedObjects.splice(index, 1);
+                }
             }
         } else {
             if (object === this.selectedObject) {
@@ -98,15 +110,39 @@ export default class SelectController extends DisplayObject {
                 this._dock.showHighlight(this.selectedObject);
                 const deselectedIndex = this._objects.indexOf(object);
                 this.messageDispatcher.post(this.onSelectEvent, deselectedIndex);
+                // Add the object to the selectedObjects array
+                this.selectedObjects.push(object);
             }
         }
     }
+
 
     deselect(object) {
         if (object) {
             this._dock.hideHighlight(object);
             this.messageDispatcher.post(this.onDeselectEvent, { deselectedObject: object });
-            this.selectedObject = null;
+            const index = this.selectedObjects.indexOf(object);
+            if (index !== -1) {
+                this.selectedObjects.splice(index, 1);
+            }
         }
+    }
+
+    hideSelectedObjects() {
+
+        for (let i = 0; i < this.selectedObjects.length; i++) {
+            this.hide(this.selectedObjects[i])
+            console.log("activated hidden")
+
+        }
+        this.selectedObjects = [];
+    }
+    show(object) {
+        object.visible = true;
+
+    }
+    hide(object) {
+        object.visible = false;
+
     }
 }

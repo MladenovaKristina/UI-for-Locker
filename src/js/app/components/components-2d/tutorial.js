@@ -12,6 +12,7 @@ export default class Hint extends DisplayObject {
         this.visible = true;
 
         this._uiElements = [];
+        this._overflow = null;
         this._spacing = [];
 
         this._hand = null;
@@ -26,13 +27,10 @@ export default class Hint extends DisplayObject {
         this.stopHint();
 
         this._uiElements = scene._uiElements;
-        for (let i = 0; i < scene._uiElements.length; i++) {
-            this._spacing.push(scene._uiElements[i].mX)
+        this._overflow = scene._overflow;
 
-        }
         this._bb = Black.stage.bounds;
-
-        this.startHint();
+        this.startHint(scene._spacing);
     }
 
     onAdded() {
@@ -46,11 +44,10 @@ export default class Hint extends DisplayObject {
 
     show() {
         if (ConfigurableParams.getData()['hint']['starting_hint_type']['value'] === 'NONE') return;
-        this.visible = false;
-        this.startHint();
+        this.visible = true;
     }
 
-    startHint() {
+    startHint(spacing) {
         this._hintTimer = new Timer(1.2, Infinity);
         this.add(this._hintTimer);
 
@@ -61,12 +58,12 @@ export default class Hint extends DisplayObject {
         const count = getCounter();
 
         this._hintTimer.on('tick', msg => {
-            this._makeStep(count);
+            this._makeStep(count, spacing);
         });
-        this._makeStep(count);
+        this._makeStep(count, spacing);
     }
 
-    _makeStep(count) {
+    _makeStep(count, spacing) {
         this.visible = true;
 
         const activeItems = this._uiElements;
@@ -75,11 +72,15 @@ export default class Hint extends DisplayObject {
         if (activeItems.length <= 0) this._hand.visible = false;
         else this._hand.visible = true;
 
-        if (this._bb.width > this._bb.height) {
-            this._hand.x = this._spacing[index] + activeItems[index].width - this._hand.width / 2;
-        } else {
-            this._hand.x = this._spacing[index] + activeItems[index].width;
+        if (Black.stage.bounds.width > Black.stage.bounds.height) {
+            this._hand.x = spacing[index] - activeItems[index].width / 2 - this._hand.width * 0.2;
         }
+        else {
+
+            this._hand.x = spacing[index] - activeItems[index].width / 2 - this._hand.width * 0.2;
+        }
+
+
         this.tap();
     }
 
