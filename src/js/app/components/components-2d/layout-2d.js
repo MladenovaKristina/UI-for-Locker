@@ -84,6 +84,11 @@ export default class Layout2D extends DisplayObject {
       this._downloadBtn.x = Helpers.LP(bb.right - 170, Black.stage.centerX);
       this._downloadBtn.y = bb.bottom - 85;
     }
+
+    this._sceneController.onResize(() => {
+      this._tutorial.onResize(this._sceneController);
+    });
+    this._selectController.onResize();
   }
   _initSceneController() {
     this._sceneController = new SceneController();
@@ -106,9 +111,6 @@ export default class Layout2D extends DisplayObject {
     });
   }
 
-  _initTutorial() {
-
-  }
 
   _createEndscreen() {
     const endscreen = this._endScreen = new Endscreen();

@@ -14,7 +14,12 @@ export default class SelectController extends DisplayObject {
         this._initCheckmark();
         this.objectsLength = this._objects.length;
     }
+    onResize() {
+        const bb = Black.stage.bounds;
 
+        this._checkmark.x = bb.right - this._checkmark.width;
+        this._checkmark.y = bb.height / 2;
+    }
     _initCheckmark() {
         const bb = Black.stage.bounds;
         this._checkmark = new Sprite('check');

@@ -56,23 +56,47 @@ export default class UIObjects extends DisplayObject {
                 element.y = positionY - height / 2;
 
                 this._dock.addChild(element);
-            }
+            } this.reposition();
 
 
-        } if (this._dock.mChildren.length > 0) {
+        }
+
+    }
+    reposition() {
+        const height = 200;
+
+        if (this._dock.mChildren.length > 0) {
+            const isLandscape = Black.stage.bounds.width > Black.stage.bounds.height;
             const childrenCount = this._dock.mChildren.length;
-            const spacing = (this._dock.width - this._dock.mChildren.reduce((totalWidth, element) => totalWidth + element.width, 0)) / (childrenCount + 1);
-            let currentX = spacing;
+            const totalChildrenWidth = this._dock.mChildren.reduce((totalWidth, element) => totalWidth + element.width, 0);
+
+            let currentX, positionY, spacing;
+            if (isLandscape) {
+                const bb = Black.stage.bounds;
+                positionY = bb.bottom - height - height / 2;
+                spacing = (bb.width - totalChildrenWidth) / (childrenCount + 1);
+                currentX = 0 - totalChildrenWidth / 2 + spacing;
+
+            } else {
+                const bb = Black.stage.bounds;
+                positionY = bb.bottom - height - height / 2;
+                spacing = (bb.width - totalChildrenWidth) / (childrenCount + 1);
+                currentX = spacing;
+            }
 
             for (let i = 0; i < childrenCount; i++) {
                 this.visible = true;
                 this.active = false;
                 const element = this._dock.mChildren[i];
+                element.y = positionY;
                 element.x = currentX;
                 currentX += element.width + spacing;
                 this._spacing.push(currentX);
             }
-
         }
     }
+    onResize() {
+        this.reposition();
+    }
+
 }

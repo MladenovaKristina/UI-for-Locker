@@ -43,4 +43,10 @@ export default class SceneController extends DisplayObject {
     onDown(x, y) {
         this._selectController.onDown(x, y);
     }
+    onResize(callback) {
+        this._uiDock.onResize();
+        this._uiElements = this._uiDock._banner.mChildren;
+        this._spacing = this._uiDock._objects._spacing;
+        callback();
+    }
 }
