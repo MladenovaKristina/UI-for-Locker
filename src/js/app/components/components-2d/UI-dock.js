@@ -62,7 +62,7 @@ export default class UIDock extends DisplayObject {
     showHighlight(object) {
         if (this._sceneNumber === 0) {
             this.highlight.x = object.x + object.width * 0.58;
-            this.highlight.y = Black.stage.bounds.bottom - object.height / 6;
+            this.highlight.y = Black.stage.bounds.bottom - object.height * 1.16;
         } else {
             this.highlight.x = object.x + object.width / 2;
             this.highlight.y = object.y + object.height / 2;
